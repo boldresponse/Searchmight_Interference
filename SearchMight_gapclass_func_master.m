@@ -33,7 +33,9 @@ subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 subj = init_object(subj,'selector','runs');
 eval(sprintf('load(''/Volumes/EDMACPRO_TIMEMACHINE/IRIS/%s'')',run_sel{1}));
 
-subj = set_mat(subj,'selector','runs',conflict_runs);
+
+
+subj = set_mat(subj,'selector','runs',gap_runs);
 
 
 %  condnames          1x8                   566  cell                
