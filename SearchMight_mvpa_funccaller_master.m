@@ -1,6 +1,6 @@
 %Ed O'Neil
 %Main MVPA script for the INTERFERENCE_MVPA project
-
+%test
 clear all ; close all
 %Pt1 or Pt2
 %If Pt 1, what phase?
