@@ -1,23 +1,17 @@
 %Jonathan
-%Main MVPA script for the INTERFERENCE_MVPA project; creates inputs for the masterscript and loops them
+%Main MVPA script for the gapclass project; creates inputs for the masterscript and loops them
 
 clear all ; close all
-%Pt1 or Pt2
-%If Pt 1, what phase?
-%classification?
 
 % define the subject list.  Just use numbers
-s =  {1..5};
+s={1..5};
 space={'standard'} %indicate 'native' or 'standard'
 run_sel={'gap_runs.mat'};
-scans={'study'}; %indicate 'study or 'test'
-condnames={'p','n','m'};
-regs_sel={'3wayconflict_regs'}%'2way_13_regs', '2way_12_regs'};
-roiname={'r_hippMNI2mm50thr.nii' 'l_hippMNI2mm50thr.nii'};
+condnames={'E1','E2','E3','E4'};
+regs_sel={'scene_7regs' 'gap_7regs' 'individual_7regs'};
+roiname={'r_hippMNI2mm50thr.nii' 'l_hippMNI2mm50thr.nii' 'post_r_hippMNI2mm50thr','ant_r_hippMNI2mm50thr','post_l_hippMNI2mm50thr','ant_l_hippMNI2mm50thr', 'post_para_MNI2mm50thr'};
 
-classifiertype={ 'gnb_searchmight'}
-
-
+classifiertype={'gnb_searchmight'}
 
 startrun=2;
 
@@ -26,33 +20,29 @@ for xxxx=1:length(roiname);
     for xxxxx=1:length(classifiertype)
         for xxx=1:length(regs_sel);
             for xx=1:length(s);
-            subnum=num2str(s{xx},'% 04.f');
-            
                 
                 parforloopdata{parforcounter,1}=s{xx};
-                
-                parforloopdata{parforcounter,2}=subnum;
-                parforloopdata{parforcounter,3}=space;
-                parforloopdata{parforcounter,4}=run_sel;
-                parforloopdata{parforcounter,5}=scans;
-                parforloopdata{parforcounter,6}=condnames;
-                parforloopdata{parforcounter,7}=regs_sel(xxx);
-                parforloopdata{parforcounter,8}=startrun;
-                parforloopdata{parforcounter,9}=roiname(xxxx);
-                parforloopdata{parforcounter,10}=classifiertype(xxxxx)
+                parforloopdata{parforcounter,2}=space;
+                parforloopdata{parforcounter,3}=run_sel;
+                parforloopdata{parforcounter,4}=condnames;
+                parforloopdata{parforcounter,5}=regs_sel(xxx);
+                parforloopdata{parforcounter,6}=startrun;
+                parforloopdata{parforcounter,7}=roiname(xxxx);
+                parforloopdata{parforcounter,8}=classifiertype(xxxxx)
                 parforcounter=parforcounter+1;
             end
         end
     end
 end
+
 net.trainParam.showWindow = false;
 
 for jj=1:length(parforloopdata);
     
-    [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_mvpa_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8},parforloopdata{jj,9}{1},parforloopdata{jj,10}{1})
+    [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_gapclass_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8})
     
     Searchresults={am pm extraReturns volume meta};
-    savefile=sprintf('S%d_reg%s_roi%s_class_%sgnbsearchmight_3waypmperm',parforloopdata{jj,1},parforloopdata{jj,7}{1},roinoext,parforloopdata{jj,10}{1})
+    savefile=sprintf('00%d_reg%s_roi%s_class%s_gnbsearchmight',parforloopdata{jj,1},parforloopdata{jj,5}{1},parforloopdata{jj,7}{1},parforloopdata{jj,8}{1})
     save(savefile,'Searchresults')
     
 end
