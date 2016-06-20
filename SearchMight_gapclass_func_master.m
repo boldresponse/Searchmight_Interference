@@ -5,21 +5,6 @@ roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,
 
 [ext,roinoext]=fileparts(roiname)
 
-%Github_ed
-% adapted from  
-%
-%    TUTORIAL_EASY.HTM 
-%    This is the sample script for the Haxby et al. (Science, 2001) 8-
-%    categories study. See the accompanying TUTORIAL_EASY.HTM, the
-%    MVPA manual (MANUAL.HTM) and then TUTORIAL_HARD.HTM.
-%
-% requires SearchmightToolbox in your path, so
-% - addpath(<path to SearchmightToolbox)
-% - setupPathsSearchmightToolbox
-%
-% and also the path you'd need in order to run the MVPA toolbox tutorial
-%
-
 % start by creating an empty subj structure
 subj = init_subj('gapclass','subj');
 
@@ -30,9 +15,9 @@ subj = load_spm_mask(subj,roinoext,roiname);
 % EPI data from a BRIK file, keeping only the voxels active in the
 % mask (see above)
 for i=startrun:startrun+2
-    raw_filenames{i+1-startrun} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/s%d_r%d_tstat_%s.nii',s,i);
+    raw_filenames{i+1-startrun} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/00%d_gap%d_tstat_allcond_standard.nii',s,i);
 end
-subj = load_spm_pattern(subj,'spr',roinoext,raw_filenames);
+subj = load_spm_pattern(subj,'epi',roinoext,raw_filenames);
 
 % initialize the regressors object in the subj structure, load in the
 % contents from a file, set the contents into the object and add a
