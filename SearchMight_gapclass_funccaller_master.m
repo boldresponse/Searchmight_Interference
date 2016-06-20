@@ -1,5 +1,5 @@
-%Ed O'Neil
-%Main MVPA script for the INTERFERENCE_MVPA project
+%Jonathan
+%Main MVPA script for the INTERFERENCE_MVPA project; creates inputs for the masterscript and loops them
 
 clear all ; close all
 %Pt1 or Pt2
@@ -7,9 +7,9 @@ clear all ; close all
 %classification?
 
 % define the subject list.  Just use numbers
-s =  {2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18};
+s =  {1..5};
 space={'standard'} %indicate 'native' or 'standard'
-run_sel={'conflict_runs.mat'};
+run_sel={'gap_runs.mat'};
 scans={'study'}; %indicate 'study or 'test'
 condnames={'p','n','m'};
 regs_sel={'3wayconflict_regs'}%'2way_13_regs', '2way_12_regs'};
