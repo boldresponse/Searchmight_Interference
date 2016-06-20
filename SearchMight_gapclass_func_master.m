@@ -22,7 +22,7 @@ roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,
 %
 
 % start by creating an empty subj structure
-subj = init_subj('conflict','subj');
+subj = init_subj('gapclass','subj');
 
 %%% create the mask that will be used when loading in the data
 subj = load_spm_mask(subj,roinoext,roiname);
