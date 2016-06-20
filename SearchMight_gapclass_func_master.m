@@ -1,4 +1,4 @@
-function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,subnum,space,run_sel,scans,condnames,regs_sel,startrun,roiname,classtype )
+function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,roiname,classtype)
 confmatx={};
 subjectCode = num2str(s);%init subj
 roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,'16'}
@@ -55,7 +55,7 @@ mask = subj.masks{1}.mat;
 % create labels for each TR (column vectors)
 
 TRlabels      = sum(regs .* repmat((1:3)',1,nTRs),1)'; %%REPMAT(1:number of conditions)
-TRlabelsGroup = conflict_runs';
+TRlabelsGroup = gap_runs';
 
 %
 % turn each block into an example, and convert labels
