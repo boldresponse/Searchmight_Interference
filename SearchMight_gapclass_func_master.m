@@ -30,7 +30,7 @@ subj = load_spm_mask(subj,roinoext,roiname);
 % EPI data from a BRIK file, keeping only the voxels active in the
 % mask (see above)
 for i=startrun:startrun+2
-    raw_filenames{i+1-startrun} = sprintf('/Volumes/EDMACPRO_TIMEMACHINE/IRIS/s%d_r%d_tstat_%s.nii',subnum,i,space{1});
+    raw_filenames{i+1-startrun} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/s%d_r%d_tstat_%s.nii',s,i);
 end
 subj = load_spm_pattern(subj,'spr',roinoext,raw_filenames);
 
