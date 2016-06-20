@@ -23,7 +23,7 @@ subj = load_spm_pattern(subj,'epi',roinoext,raw_filenames);
 % contents from a file, set the contents into the object and add a
 % cell array of condnames to the object for future reference
 subj = init_object(subj,'regressors','conds');
-eval(sprintf('load(''/Volumes/EDMACPRO_TIMEMACHINE/IRIS/%s'')',regs_sel));
+eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',regs_sel));
 subj = set_mat(subj,'regressors','conds',regs);
 subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 
@@ -31,7 +31,7 @@ subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 % initialize the selectors object, then read in the contents
 % for it from a file, and set them into the object
 subj = init_object(subj,'selector','runs');
-eval(sprintf('load(''/Volumes/EDMACPRO_TIMEMACHINE/IRIS/%s'')',run_sel{1}));
+eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',run_sel{1}));
 
 
 
