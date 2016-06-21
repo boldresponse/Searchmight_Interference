@@ -1,11 +1,9 @@
 %Ed O'Neil
 %Main MVPA script for the INTERFERENCE_MVPA project
-
+%test
 clear all ; close all
 %Pt1 or Pt2
 %If Pt 1, what phase?
-%classification?
-
 % define the subject list.  Just use numbers
 s =  {2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18};
 space={'standard'} %indicate 'native' or 'standard'
