@@ -1,25 +1,9 @@
-function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,subnum,space,run_sel,scans,condnames,regs_sel,startrun,roiname,classtype )
+function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,roiname,classtype)
 confmatx={};
 subjectCode = num2str(s);%init subj
 roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,'16'}
 
 [ext,roinoext]=fileparts(roiname)
-
-%%%GITHUB TEST
-
-% adapted from  
-%
-%    TUTORIAL_EASY.HTM 
-%    This is the sample script for the Haxby et al. (Science, 2001) 8-
-%    categories study. See the accompanying TUTORIAL_EASY.HTM, the
-%    MVPA manual (MANUAL.HTM) and then TUTORIAL_HARD.HTM.
-%
-% requires SearchmightToolbox in your path, so
-% - addpath(<path to SearchmightToolbox)
-% - setupPathsSearchmightToolbox
-%
-% and also the path you'd need in order to run the MVPA toolbox tutorial
-%
 
 % start by creating an empty subj structure
 subj = init_subj('gapclass','subj');
@@ -31,15 +15,15 @@ subj = load_spm_mask(subj,roinoext,roiname);
 % EPI data from a BRIK file, keeping only the voxels active in the
 % mask (see above)
 for i=startrun:startrun+2
-    raw_filenames{i+1-startrun} = sprintf('/Volumes/EDMACPRO_TIMEMACHINE/IRIS/s%d_r%d_tstat_%s.nii',subnum,i,space{1});
+    raw_filenames{i+1-startrun} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/00%d_gap%d_tstat_allcond_standard.nii',s,i);
 end
-subj = load_spm_pattern(subj,'spr',roinoext,raw_filenames);
+subj = load_spm_pattern(subj,'epi',roinoext,raw_filenames);
 
 % initialize the regressors object in the subj structure, load in the
 % contents from a file, set the contents into the object and add a
 % cell array of condnames to the object for future reference
 subj = init_object(subj,'regressors','conds');
-eval(sprintf('load(''/Volumes/EDMACPRO_TIMEMACHINE/IRIS/%s'')',regs_sel));
+eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',regs_sel));
 subj = set_mat(subj,'regressors','conds',regs);
 subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 
@@ -47,9 +31,11 @@ subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 % initialize the selectors object, then read in the contents
 % for it from a file, and set them into the object
 subj = init_object(subj,'selector','runs');
-eval(sprintf('load(''/Volumes/EDMACPRO_TIMEMACHINE/IRIS/%s'')',run_sel{1}));
+eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',run_sel{1}));
 
-subj = set_mat(subj,'selector','runs',conflict_runs);
+
+
+subj = set_mat(subj,'selector','runs',gap_runs);
 
 
 %  condnames          1x8                   566  cell                
@@ -69,7 +55,7 @@ mask = subj.masks{1}.mat;
 % create labels for each TR (column vectors)
 
 TRlabels      = sum(regs .* repmat((1:3)',1,nTRs),1)'; %%REPMAT(1:number of conditions)
-TRlabelsGroup = conflict_runs';
+TRlabelsGroup = gap_runs';
 
 %
 % turn each block into an example, and convert labels
