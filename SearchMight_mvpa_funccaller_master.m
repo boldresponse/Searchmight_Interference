@@ -1,23 +1,29 @@
 %Ed O'Neil
 %Main MVPA script for the INTERFERENCE_MVPA project
-%test
+%WedJ22
 clear all ; close all
 %Pt1 or Pt2
 %If Pt 1, what phase?
+%classification?
+
 % define the subject list.  Just use numbers
-s =  {2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18};
+s =  {1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18}
 space={'standard'} %indicate 'native' or 'standard'
-run_sel={'conflict_runs.mat'};
-scans={'study'}; %indicate 'study or 'test'
-condnames={'p','n','m'};
-regs_sel={'3wayconflict_regs'}%'2way_13_regs', '2way_12_regs'};
-roiname={'r_hippMNI2mm50thr.nii' 'l_hippMNI2mm50thr.nii'};
+run_sel={'noresp_runs.mat'}
+scans={'study'} %indicate 'study or 'test''_TestCollapse_tstat9_6mm_bin_27_standard_mask.nii''_sumLocTest196_6mm_Holdstocksub2_PRC_bin_standard_mask.nii';'_TestCollapse_tstat9_6mm_bin_196_standard_mask.nii';;'_TestCollapse_tstat9_6mm_196binxHoldstocksub2_PRC_bin_standard_mask.nii''_Loctstat5_6mm_bin_196_standard_mask.nii';;'_TestCollapse_tstat9_6mm_27binxVVS_bin_standard_mask.nii';'_TestCollapse_tstat9_6mm_27binxHOAtlas_LatOcc_0perc2mm_bin_standard_mask.nii';'_TestCollapse_tstat9_6mm_27binxHOAtlas_TempOccFus_0per2mm_bin_standard_mask.nii';
+condnames={'f','c'}
+regs_sel={'315_s';'315_t';'315_perc';'315_niint';'315_intper';'315_WWM';'315_RWM'}
+roiname={'MNI152_T1_2mm_brain_mask.nii'}
+
+
+if isequal(scans{1},'study')==1
+    startrun=3;
+elseif isequal(scans{1},'test')==1
+    startrun=8;
+end
 
 classifiertype={ 'gnb_searchmight'}
 
-
-
-startrun=2;
 
 parforcounter=1
 for xxxx=1:length(roiname);
@@ -25,10 +31,9 @@ for xxxx=1:length(roiname);
         for xxx=1:length(regs_sel);
             for xx=1:length(s);
             subnum=num2str(s{xx},'% 04.f');
-            
-                
+                           
                 parforloopdata{parforcounter,1}=s{xx};
-                
+               
                 parforloopdata{parforcounter,2}=subnum;
                 parforloopdata{parforcounter,3}=space;
                 parforloopdata{parforcounter,4}=run_sel;
@@ -50,7 +55,7 @@ for jj=1:length(parforloopdata);
     [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_mvpa_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8},parforloopdata{jj,9}{1},parforloopdata{jj,10}{1})
     
     Searchresults={am pm extraReturns volume meta};
-    savefile=sprintf('S%d_reg%s_roi%s_class_%sgnbsearchmight_3waypmperm',parforloopdata{jj,1},parforloopdata{jj,7}{1},roinoext,parforloopdata{jj,10}{1})
+    savefile=sprintf('S%d_reg%s_roi%s_class_%s',parforloopdata{jj,1},parforloopdata{jj,7}{1},roinoext,parforloopdata{jj,10}{1})
     save(savefile,'Searchresults')
     
 end
