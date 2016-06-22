@@ -1,19 +1,19 @@
 %Jonathan
 %Main MVPA script for the gapclass project; creates inputs for the masterscript and loops them
 
-clear all ; close all
+clear all; close all
 
 % define the subject list.  Just use numbers
-s={1..5};
+s={1 2 3 4 5};
 space={'standard'} %indicate 'native' or 'standard'
 run_sel={'gap_runs.mat'};
-condnames={'E1','E2','E3','E4'};
+condnames={'E1','E2','E3','E4', 'catch'};
 regs_sel={'scene_7regs' 'gap_7regs' 'individual_7regs'};
-roiname={'r_hippMNI2mm50thr.nii' 'l_hippMNI2mm50thr.nii' 'post_r_hippMNI2mm50thr','ant_r_hippMNI2mm50thr','post_l_hippMNI2mm50thr','ant_l_hippMNI2mm50thr', 'post_para_MNI2mm50thr'};
+roiname={'r_hippMNI2mm50thr.nii' 'l_hippMNI2mm50thr.nii' 'post_r_hippMNI2mm50thr','ant_r_hippMNI2mm50thr','post_l_hippMNI2mm50thr','ant_l_hippMNI2mm50thr','post_para_MNI2mm50thr'};
 
 classifiertype={'gnb_searchmight'}
 
-startrun=2;
+startrun=1;
 
 parforcounter=1
 for xxxx=1:length(roiname);
@@ -39,7 +39,7 @@ net.trainParam.showWindow = false;
 
 for jj=1:length(parforloopdata);
     
-    [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_gapclass_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8})
+    [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_gapclass_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8}{1})
     
     Searchresults={am pm extraReturns volume meta};
     savefile=sprintf('00%d_reg%s_roi%s_class%s_gnbsearchmight',parforloopdata{jj,1},parforloopdata{jj,5}{1},parforloopdata{jj,7}{1},parforloopdata{jj,8}{1})
