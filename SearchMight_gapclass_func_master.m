@@ -1,4 +1,4 @@
-function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,roiname,classtype)
+function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,endrun,roiname,classtype)
 confmatx={};
 subjectCode = num2str(s);%init subj
 roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,'16'}
@@ -14,8 +14,8 @@ subj = load_spm_mask(subj,roinoext,roiname);
 % now, read and set up the actual data. load_AFNI_pattern reads in the
 % EPI data from a BRIK file, keeping only the voxels active in the
 % mask (see above)
-for i=startrun:startrun+2
-    raw_filenames{i+1-startrun} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/00%d_gap%d_tstat_allcond_standard.nii',s,i);
+for i=startrun:endrun
+    raw_filenames{i} = sprintf('/Users/leelab/Documents/HR_gapclass/york/tstat_standard/00%d_gap%d_tstat_allcond_standard.nii',s,i);
 end
 subj = load_spm_pattern(subj,'epi',roinoext,raw_filenames);
 
