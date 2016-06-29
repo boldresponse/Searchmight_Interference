@@ -67,6 +67,8 @@ end
 dummy=load_nii('Emptyvol.nii')
 dummy.img=dummy.img./0
 %Average subjects over time (be sure to pull values of the same comparison)
+%create loop for this.
+
 
 avggnb(:,:,:)=mean(mastervol,1);
 gnb1(:,:,:)=squeeze(mastervol(1,:,:,:));
@@ -79,7 +81,7 @@ dummyavg=dummy
 dummyavg.img=double(dummy.img)
 dummyavg.img=double(dummy.img)
 
-dummyavg.img=1-avggnb
+dummyavg.img=1-avggnb  %%%% 1 - used if looking at p-values (leading to lower p's showing up brighter in fsl)
 
 dummy1=dummy
 dummy1.img=double(dummy.img)
