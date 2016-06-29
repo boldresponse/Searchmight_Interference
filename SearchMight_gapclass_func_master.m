@@ -1,7 +1,7 @@
-function [ am, pm, extraReturns, volume,meta,roinoext ] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,endrun,roiname,classtype)
+function [am, pm, extraReturns, volume, meta, roinoext] = Searchlight_mvpa_func_master(s,space,run_sel,condnames,regs_sel,startrun,endrun,roiname,classtype)
 confmatx={};
 subjectCode = num2str(s);%init subj
-roi={'01'}%, '02', '03', '04','05' ,'06'}%, '07', '08', '09', '10', '14', '15' ,'16'}
+roi={'01'}
 
 [ext,roinoext]=fileparts(roiname)
 
@@ -23,8 +23,9 @@ subj = load_spm_pattern(subj,'epi',roinoext,raw_filenames);
 % contents from a file, set the contents into the object and add a
 % cell array of condnames to the object for future reference
 subj = init_object(subj,'regressors','conds');
-eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',regs_sel));
-subj = set_mat(subj,'regressors','conds',regs);
+eval(sprintf('load(''/Users/leelab/Documents/HR_gapclass/york/tstat_standard/%s'')',regs_sel{1}));
+regressors=eval(regs_sel{1}); %%find a more graceful way to do this
+subj = set_mat(subj,'regressors','conds',regressors);
 subj = set_objfield(subj,'regressors','conds','condnames',condnames);
 
 % store the names of the regressor conditions
@@ -54,8 +55,8 @@ mask = subj.masks{1}.mat;
 
 % create labels for each TR (column vectors)
 
-TRlabels      = sum(regs .* repmat((1:3)',1,nTRs),1)'; %%REPMAT(1:number of conditions)
-TRlabelsGroup = gap_runs';
+TRlabels      = sum(regs .* repmat((1:size(regressors,1))',1,nTRs),1)'; %%REPMAT(1:number of conditions)
+TRlabelsGroup = gap_runs'; %%we can do this better too
 
 %
 % turn each block into an example, and convert labels
