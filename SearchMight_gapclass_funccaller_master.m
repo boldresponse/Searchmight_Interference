@@ -51,18 +51,61 @@ for jj=1:length(parforloopdata);
     
 end
 
-%             %Add prepare data for subject structure
-%              for zz=1:length(parforloopdata)
-%  srls=Searchresults{zz}{1}
-%  acc(zz,:)=srls
-%  end
-%  avgacc=mean(acc,1)
-%
-% %summarize
-% volume = repmat(NaN,[91 109 91]);
-%
-% volume(meta.indicesIn3D) = avgacc;
-%
-% dummy=load_untouch_nii('standard_mask.nii')
-% dummy.img=volume
-% eval(sprintf('save_untouch_nii(dummy,''2waygnb%s_%s'')',parforloopdata{jj,7}{1},parforloopdata{jj,9}{1}))
+%this script uses info in the parforloopdata, and you need to reference it
+%to make sense of what is going on here.based on output of loops in /Volumes/EDMACPRO_TIMEMACHINE/IRIS/SearchMight_mvpa_funccaller_master.m
+for jj=1:size(parforloopdata,1);
+    
+    %   [ am, pm, extraReturns, volume,meta,roinoext ]=SearchMight_mvpa_func_master(parforloopdata{jj,1},parforloopdata{jj,1},parforloopdata{jj,3},parforloopdata{jj,4},parforloopdata{jj,5},parforloopdata{jj,6},parforloopdata{jj,7}{1},parforloopdata{jj,8},parforloopdata{jj,9}{1},parforloopdata{jj,10}{1})
+    [ext,roinoext]=fileparts(parforloopdata{jj,7}{1})
+    openfile=sprintf('00%d_reg%s_roi%s_class%s_gnbsearchmight.mat',parforloopdata{jj,1},parforloopdata{jj,5}{1},roinoext,parforloopdata{jj,8}{1})
+    filevolume=open(openfile)
+    filevolume.Searchresults{4}(filevolume.Searchresults{5}.indicesIn3D) = filevolume.Searchresults{2};
+    mastervol(jj,:,:,:)=filevolume.Searchresults{4};
+end
+%Load up empty mask
+
+dummy=load_nii('Emptyvol.nii')
+dummy.img=dummy.img./0
+%Average subjects over time (be sure to pull values of the same comparison)
+
+avggnb(:,:,:)=mean(mastervol,1);
+gnb1(:,:,:)=squeeze(mastervol(1,:,:,:));
+gnb2(:,:,:)=squeeze(mastervol(2,:,:,:));
+gnb3(:,:,:)=squeeze(mastervol(3,:,:,:));
+gnb4(:,:,:)=squeeze(mastervol(4,:,:,:));
+
+%populate these values into your mask
+dummyavg=dummy
+dummyavg.img=double(dummy.img)
+dummyavg.img=double(dummy.img)
+
+dummyavg.img=1-avggnb
+
+dummy1=dummy
+dummy1.img=double(dummy.img)
+
+dummy1.img=1-gnb1
+
+dummy2=dummy
+dummy2.img=double(dummy.img)
+
+dummy2.img=1-gnb2
+
+dummy3=dummy
+dummy3.img=double(dummy.img)
+
+dummy3.img=1-gnb3
+
+dummy4=dummy
+dummy4.img=double(dummy.img)
+
+dummy4.img=1-gnb4
+
+%Save it off
+save_nii(dummyavg,'4way_gnbavg_p_perm.nii')
+save_nii(dummy1,'4way_gnb1_p_perm.nii')
+save_nii(dummy2,'4way_gnb2_p_perm.nii')
+save_nii(dummy3,'4way_gnb3_p_perm.nii')
+save_nii(dummy4,'4way_gnb4_p_perm.nii')
+
+%fslview usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz /Users/leelab/Documents/HR_gapclass/york/tstat_standards_gnb4_p_perm.nii -l Blue-Lightblue -b 95,100
